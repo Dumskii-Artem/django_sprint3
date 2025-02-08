@@ -147,3 +147,7 @@ dmypy.json
 
 # папки со статикой и медиа
 media/
+
+/templates/
+/templates_original/
+*.sqlite
