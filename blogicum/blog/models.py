@@ -57,7 +57,7 @@ class Post(BaseModel):
     pub_date = models.DateTimeField(
         'Дата и время публикации',
         help_text='Если установить дату и время в будущем — можно делать '
-        'отложенные публикации')
+        'отложенные публикации.')
     author = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
