@@ -11,7 +11,7 @@ class BaseModel(models.Model):
         'Опубликовано',
         default=True,
         help_text='Снимите галочку, чтобы скрыть публикацию.')
-    created_at = models.DateTimeField('Добавлено')
+    created_at = models.DateTimeField('Добавлено', auto_now_add=True)
 
     class Meta:
         abstract = True
@@ -22,11 +22,11 @@ class Category(BaseModel):
 
     title = models.CharField('Заголовок', max_length=256)
     description = models.TextField('Описание')
-    slug = models.SlugField('Идентификатор',
-                            max_length=64, unique=True,
-                            help_text='Идентификатор страницы для URL; '
-                            'разрешены символы латиницы, цифры, '
-                            'дефис и подчеркивание.')
+    slug = models.SlugField(
+        'Идентификатор',
+        max_length=64, unique=True,
+        help_text='Идентификатор страницы для URL; разрешены символы'
+        ' латиницы, цифры, дефис и подчёркивание.')
 
     class Meta:
         verbose_name = 'категория'
@@ -56,7 +56,7 @@ class Post(BaseModel):
     text = models.TextField('Текст')
     pub_date = models.DateTimeField(
         'Дата и время публикации',
-        help_text='Если установить дату и время в будущем - можно делать'
+        help_text='Если установить дату и время в будущем - можно делать '
         'отложенные публикации')
     author = models.ForeignKey(
         User,
