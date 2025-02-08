@@ -7,10 +7,10 @@ User = get_user_model()
 class BaseModel(models.Model):
     """BaseModel."""
 
-    is_published = models.BooleanField('Опубликовано',
-                                       default=True,
-                                       help_text='Снимите галочку, чтобы скрыть публикацию.'
-                                       )
+    is_published = models.BooleanField(
+        'Опубликовано',
+        default=True,
+        help_text='Снимите галочку, чтобы скрыть публикацию.')
     created_at = models.DateTimeField('Добавлено')
 
     class Meta:
@@ -27,7 +27,6 @@ class Category(BaseModel):
                             help_text='Идентификатор страницы для URL; '
                             'разрешены символы латиницы, цифры, '
                             'дефис и подчеркивание.')
-
 
     class Meta:
         verbose_name = 'категория'
@@ -81,7 +80,7 @@ class Post(BaseModel):
         related_name='post',
         verbose_name='Категория'
     )
-    
+
     class Meta:
         verbose_name = 'публикация'
         verbose_name_plural = 'Публикации'
