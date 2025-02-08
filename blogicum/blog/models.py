@@ -56,7 +56,7 @@ class Post(BaseModel):
     text = models.TextField('Текст')
     pub_date = models.DateTimeField(
         'Дата и время публикации',
-        help_text='Если установить дату и время в будущем - можно делать '
+        help_text='Если установить дату и время в будущем  — можно делать '
         'отложенные публикации')
     author = models.ForeignKey(
         User,
