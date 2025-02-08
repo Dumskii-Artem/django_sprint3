@@ -11,7 +11,7 @@ def index(request):
     post_list = Post.objects.select_related('category').select_related(
         'location').select_related('author').filter(
             Q(pub_date__lt=datetime.datetime.now())
-            & Q(is_published=True) 
+            & Q(is_published=True)
             & Q(category__is_published=True)).order_by('-pub_date')[0:5]
     return render(request, 'blog/index.html', {'post_list': post_list})
 
@@ -34,9 +34,9 @@ def category_posts(request, category_slug):
         is_published=True)
     post_list = Post.objects.select_related('category').select_related(
         'location').select_related('author').filter(
-        Q(category__slug=category_slug) &
-        Q(pub_date__lt=datetime.datetime.now()) &
-        Q(is_published=True)
+        Q(category__slug=category_slug)
+        & Q(pub_date__lt=datetime.datetime.now())
+        & Q(is_published=True)
     ).order_by('-pub_date')
     return render(request, 'blog/category.html', {
         'category': category, 'post_list': post_list})
