@@ -1,25 +1,32 @@
-from django.shortcuts import render, get_object_or_404
-from blog.models import Post, Category
-from django.db.models import Q
-
-# post_dict = {post['id']: post for post in posts}
-
 import datetime
+
+from django.db.models import Q
+from django.shortcuts import render, get_object_or_404
+
+from blog.models import Post, Category
+
+
+def get_published_posts(category_slug=None):
+    posts = Post.objects.select_related(
+        'category', 'location', 'author'
+    ).filter(
+        pub_date__lt=datetime.datetime.now(),
+        is_published=True,
+        category__is_published=True
+    )
+    if category_slug:
+        posts = posts.filter(category__slug=category_slug)
+    return posts
 
 
 def index(request):
-    post_list = Post.objects.select_related('category').select_related(
-        'location').select_related('author').filter(
-            Q(pub_date__lt=datetime.datetime.now())
-            & Q(is_published=True)
-            & Q(category__is_published=True)).order_by('-pub_date')[0:5]
-    return render(request, 'blog/index.html', {'post_list': post_list})
+    return render(request, 'blog/index.html', {'posts': get_published_posts()[:5]})
 
 
-def post_detail(request, pk):
+def post_detail(request, post_id):
     post = get_object_or_404(
         Post,
-        pk=pk,
+        pk=post_id,
         pub_date__lt=datetime.datetime.now(),
         is_published=True,
         category__is_published=True)
@@ -32,11 +39,6 @@ def category_posts(request, category_slug):
         Category,
         slug=category_slug,
         is_published=True)
-    post_list = Post.objects.select_related('category').select_related(
-        'location').select_related('author').filter(
-        Q(category__slug=category_slug)
-        & Q(pub_date__lt=datetime.datetime.now())
-        & Q(is_published=True)
-    ).order_by('-pub_date')
     return render(request, 'blog/category.html', {
-        'category': category, 'post_list': post_list})
+        'category': category,
+        'posts': get_published_posts(category_slug=category_slug)})
