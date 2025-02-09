@@ -151,3 +151,4 @@ media/
 /templates/
 /templates_original/
 *.sqlite
+/blogicum/static_dev/css/
