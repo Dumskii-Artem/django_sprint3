@@ -1,6 +1,5 @@
 import datetime
 
-from django.db.models import Q
 from django.shortcuts import render, get_object_or_404
 
 from blog.models import Post, Category
@@ -20,7 +19,9 @@ def get_published_posts(category_slug=None):
 
 
 def index(request):
-    return render(request, 'blog/index.html', {'posts': get_published_posts()[:5]})
+    return render(
+        request, 'blog/index.html',
+        {'posts': get_published_posts()[:5]})
 
 
 def post_detail(request, post_id):
