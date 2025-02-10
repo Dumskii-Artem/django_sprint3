@@ -63,7 +63,7 @@ class Post(AdminModel):
         User,
         on_delete=models.CASCADE,
         related_name=POST_RELATION,
-        verbose_name='Автор'
+        verbose_name='Автор публикации'
     )
     location = models.ForeignKey(
         Location,
