@@ -1,11 +1,12 @@
-from django.db import models
 from django.contrib.auth import get_user_model
+from django.db import models
 
 User = get_user_model()
+POST_RELATION = 'posts'
 
 
-class BaseModel(models.Model):
-    """BaseModel."""
+class AdminModel(models.Model):
+    """AdminModel."""
 
     is_published = models.BooleanField(
         'Опубликовано',
@@ -17,7 +18,7 @@ class BaseModel(models.Model):
         abstract = True
 
 
-class Category(BaseModel):
+class Category(AdminModel):
     """Категория."""
 
     title = models.CharField('Заголовок', max_length=256)
@@ -25,18 +26,18 @@ class Category(BaseModel):
     slug = models.SlugField(
         'Идентификатор',
         max_length=64, unique=True,
-        help_text='Идентификатор страницы для URL; разрешены символы'
-        ' латиницы, цифры, дефис и подчёркивание.')
+        help_text='Идентификатор страницы для URL; разрешены символы '
+                  'латиницы, цифры, дефис и подчёркивание.')
 
     class Meta:
         verbose_name = 'категория'
         verbose_name_plural = 'Категории'
 
     def __str__(self):
-        return self.title
+        return ' '.join(self.title.split()[:6])
 
 
-class Location(BaseModel):
+class Location(AdminModel):
     """Местоположение."""
 
     name = models.CharField('Название места', max_length=256)
@@ -49,7 +50,7 @@ class Location(BaseModel):
         return self.name
 
 
-class Post(BaseModel):
+class Post(AdminModel):
     """Публикация."""
 
     title = models.CharField('Заголовок', max_length=256)
@@ -57,27 +58,26 @@ class Post(BaseModel):
     pub_date = models.DateTimeField(
         'Дата и время публикации',
         help_text='Если установить дату и время в будущем — можно делать '
-        'отложенные публикации.')
+                  'отложенные публикации.')
     author = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
-        related_name='post',
-        verbose_name='Автор публикации'
-
+        related_name=POST_RELATION,
+        verbose_name='Автор'
     )
     location = models.ForeignKey(
         Location,
         on_delete=models.SET_NULL,
         blank=True,
         null=True,
-        related_name='post',
+        related_name=POST_RELATION,
         verbose_name='Местоположение'
     )
     category = models.ForeignKey(
         Category,
         on_delete=models.SET_NULL,
         null=True,
-        related_name='post',
+        related_name=POST_RELATION,
         verbose_name='Категория'
     )
 
@@ -87,4 +87,4 @@ class Post(BaseModel):
         ordering = ('-pub_date',)
 
     def __str__(self):
-        return self.title
+        return ' '.join(self.title.split()[:6])

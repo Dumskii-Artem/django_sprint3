@@ -4,7 +4,8 @@
 {% endblock %}
 {% block content %}
   <h1>Публикации в категории «{{ category.title }}»</h1>
-  <p class="mb-5" style="white-space: pre-wrap">{{ category.description }}</p>
+  <p class="mb-5"> {{ category.description|linebreaksbr }}</p>
+    
   {% for post in posts %}
     <article class="mb-5">  
       {% include "includes/post_card.html" %}
